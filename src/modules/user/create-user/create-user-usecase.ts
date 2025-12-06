@@ -27,7 +27,6 @@ export class CreateUserUseCase {
     if (verifyIfUserExists) throw new Error("Usuário já existe");
 
     const passwordHash = await hash(password, 8);
-    const date = parse("15/09/2002", "dd/MM/yyyy", new Date());
 
     const user = await prisma.user.create({
       data: {
@@ -35,7 +34,7 @@ export class CreateUserUseCase {
         email,
         password: passwordHash,
         image_url,
-        dateOfBirth: date,
+        dateOfBirth,
       },
     });
 
