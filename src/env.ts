@@ -4,6 +4,7 @@ import "dotenv/config";
 const envSchema = z.object({
   DATABASE_URL: z.string(),
   BASE_APP_URL: z.string(),
+  BASE_API_URL: z.string(),
   JWT_SECRET: z.string(),
   CLOUDINARY_CLOUD_NAME: z.string(),
   CLOUDINARY_API_KEY: z.string(),
