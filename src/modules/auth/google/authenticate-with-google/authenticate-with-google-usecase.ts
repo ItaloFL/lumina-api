@@ -2,6 +2,7 @@ import { google } from "googleapis";
 import { oAuth2Client } from "../../../../lib/google-auth";
 import { prisma } from "../../../../lib/prisma";
 import { sign } from "jsonwebtoken";
+import { env } from "../../../../env";
 
 export class AuthenticateWithGoogleUseCase {
   async execute(code: string) {
@@ -22,19 +23,22 @@ export class AuthenticateWithGoogleUseCase {
     });
 
     if (!user) {
-      await prisma.user.create({
+      user = await prisma.user.create({
         data: {
-          name: name,
-          email: email,
+          name,
+          email,
           provider: "GOOGLE",
           image_url: avatar,
         },
       });
     }
 
-    const token = sign({ id: user?.id }, process.env.JWT_SECRET!, {
+    const token = sign({}, env.JWT_SECRET, {
+      subject: user.id, 
       expiresIn: "7d",
     });
+
+    return token;
 
     return token;
   }

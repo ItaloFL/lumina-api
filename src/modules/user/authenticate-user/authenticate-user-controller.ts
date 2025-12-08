@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { AuthenticateUserUseCase } from "./authenticate-user-usecase";
+import { env } from "../../../env";
 
 export class AuthenticateUserController {
   async handle(request: Request, response: Response) {
@@ -11,7 +12,12 @@ export class AuthenticateUserController {
       email,
       password,
     });
-
-    return response.json({ token });
+    
+    response.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+    response.send()
   }
 }

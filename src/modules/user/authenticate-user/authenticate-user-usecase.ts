@@ -1,10 +1,11 @@
 import { compare } from "bcryptjs";
 import { prisma } from "../../../lib/prisma";
 import { sign } from "jsonwebtoken";
+import { env } from "../../../env";
 
 interface AuthenticateUserUseCaseRequest {
   email: string;
-  password: string;
+  password?: string;
 }
 
 export class AuthenticateUserUseCase {
@@ -18,14 +19,14 @@ export class AuthenticateUserUseCase {
     if (!verifyIfUserExists) throw new Error("Usuário ou senha incorretos");
 
     const verifyIfPasswordCorrect = await compare(
-      password,
-      verifyIfUserExists.password
+      password!,
+      verifyIfUserExists.password!
     );
 
     if (!verifyIfPasswordCorrect)
       throw new Error("Usuário ou senha incorretos");
 
-    const token = sign({}, process.env.JWT_SECRET!, {
+    const token = sign({}, env.JWT_SECRET, {
       subject: verifyIfUserExists.id,
       expiresIn: "1d",
     });

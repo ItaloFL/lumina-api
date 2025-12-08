@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { AuthenticateUserUseCase } from "../../../user/authenticate-user/authenticate-user-usecase";
 import { AuthenticateWithGoogleUseCase } from "./authenticate-with-google-usecase";
+import { env } from "../../../../env";
 
 export class AuthenticateWithGoogleController {
   async handle(request: Request, response: Response) {
@@ -15,6 +15,6 @@ export class AuthenticateWithGoogleController {
       secure: false,
       sameSite: "lax",
     });
-    response.redirect("http://localhost:5173/dashboard");
+    response.redirect(`${env.BASE_APP_URL}/dashboard`);
   }
 }
