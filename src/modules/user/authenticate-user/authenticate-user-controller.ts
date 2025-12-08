@@ -12,12 +12,12 @@ export class AuthenticateUserController {
       email,
       password,
     });
-    
+
     response.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
     });
-    response.send()
+    response.send();
   }
 }
