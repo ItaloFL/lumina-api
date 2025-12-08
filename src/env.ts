@@ -13,6 +13,8 @@ const envSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string(),
   GITHUB_CLIENT_ID: z.string(),
   GITHUB_CLIENT_SECRET: z.string(),
+  GMAIL_USER: z.string(),
+  GMAIL_APP_PASSWORD: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
