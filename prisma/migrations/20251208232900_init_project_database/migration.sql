@@ -1,11 +1,15 @@
+-- CreateEnum
+CREATE TYPE "AuthProvider" AS ENUM ('LOCAL', 'GOOGLE', 'GITHUB');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "image_url" TEXT,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "dateOfBirth" TIMESTAMP(3) NOT NULL,
+    "password" TEXT,
+    "dateOfBirth" TIMESTAMP(3),
+    "provider" "AuthProvider" NOT NULL DEFAULT 'LOCAL',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
