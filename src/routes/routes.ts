@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { CreateUserController } from "../modules/user/create-user/create-user-controller";
 import { AuthenticateUserController } from "../modules/user/authenticate-user/authenticate-user-controller";
 import { upload } from "../config/upload";
@@ -10,6 +10,7 @@ import { GetUserProfileController } from "../modules/user/get-user-profile/get-u
 import { ensureAuthenticateUserMiddleware } from "../middleware/ensureAuthenticateUserMiddleware";
 import { UpdateUserProfileController } from "../modules/user/update-user-profile/update-user-profile-controller";
 import { UserLogoutController } from "../modules/auth/logout/user-logout-controller";
+import { prisma } from "../lib/prisma";
 
 const createUserController = new CreateUserController();
 const authenticateUserController = new AuthenticateUserController();
@@ -40,5 +41,10 @@ routes.put(
   updateUserProfileController.handle
 );
 routes.post("/logout", userLogoutController.handle);
+routes.get('/users', async (request: Request, response: Response) => {
+  const users = await prisma.user.findMany()
+
+  return response.json(users)
+})
 
 export { routes };
