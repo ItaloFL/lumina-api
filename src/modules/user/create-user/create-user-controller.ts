@@ -6,8 +6,8 @@ export class CreateUserController {
   async handle(request: Request, response: Response) {
     const { name, email, password, dateOfBirth } = request.body;
     const image = request.file;
-    const image_url = request.file;
 
+    
     const createUserUseCase = new CreateUserUseCase();
 
     const base64Image = `data:${
