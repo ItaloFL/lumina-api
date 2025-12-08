@@ -11,8 +11,8 @@ export class AuthenticateWithGithubController {
 
     response.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
     });
     response.redirect(`${env.BASE_APP_URL}/dashboard`);
   }
