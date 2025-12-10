@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { UpdateUserProfileUseCase } from "./update-user-profile-usecase";
 import { cloudinary } from "../../../config/cloudinary";
+import { MakeUpdateUserProfileUseCase } from "../../../factories/make-update-user-profile-use-case";
 
 export class UpdateUserProfileController {
   async handle(request: Request, response: Response) {
@@ -8,7 +8,7 @@ export class UpdateUserProfileController {
     const { name, email, dateOfBirth } = request.body;
     const image = request.file;
 
-    const updatedUserProfileUseCase = new UpdateUserProfileUseCase();
+    const updatedUserProfileUseCase = MakeUpdateUserProfileUseCase();
 
     let imageUrl: string | undefined = undefined;
 

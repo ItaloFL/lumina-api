@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { UserForgotPasswordSendMailUseCase } from "./user-forgot-password-send-mail-usecase";
+import { MakeUserForgotPasswordSendMailUseCase } from "../../../factories/make-user-forgot-password-send-mail-use-case";
 
 export class UserForgotPasswordSendMailController {
   async handle(request: Request, response: Response) {
     const { email } = request.body;
 
     const sendMailForgotPasswordUseCase =
-      new UserForgotPasswordSendMailUseCase();
+      MakeUserForgotPasswordSendMailUseCase();
 
     await sendMailForgotPasswordUseCase.execute({ email });
 

@@ -1,7 +1,7 @@
 import { compare } from "bcryptjs";
-import { prisma } from "../../../lib/prisma";
 import { sign } from "jsonwebtoken";
 import { env } from "../../../env";
+import { PrismaUsersRepository } from "../../../repositories/user/prisma/prisma-users-repository";
 
 interface AuthenticateUserUseCaseRequest {
   email: string;
@@ -9,12 +9,9 @@ interface AuthenticateUserUseCaseRequest {
 }
 
 export class AuthenticateUserUseCase {
+  constructor(private usersRepository: PrismaUsersRepository) {}
   async execute({ email, password }: AuthenticateUserUseCaseRequest) {
-    const verifyIfUserExists = await prisma.user.findFirst({
-      where: {
-        email,
-      },
-    });
+    const verifyIfUserExists = await this.usersRepository.findByEmail(email);
 
     if (!verifyIfUserExists) throw new Error("Usuário ou senha incorretos");
 

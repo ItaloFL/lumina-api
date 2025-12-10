@@ -1,4 +1,5 @@
 import { prisma } from "../../../lib/prisma";
+import { UsersRepository } from "../../../repositories/user/users-repository";
 
 interface UpdateUserUseCaseRequest {
   id: string;
@@ -9,6 +10,7 @@ interface UpdateUserUseCaseRequest {
 }
 
 export class UpdateUserProfileUseCase {
+  constructor(private usersRepository: UsersRepository) {}
   async execute({
     id,
     name,
@@ -16,24 +18,16 @@ export class UpdateUserProfileUseCase {
     image_url,
     dateOfBirth,
   }: UpdateUserUseCaseRequest) {
-    const verifyIfUserExist = await prisma.user.findFirst({
-      where: {
-        email,
-      },
-    });
+    const verifyIfUserExist = await this.usersRepository.findByEmail(email);
 
     if (!verifyIfUserExist) throw new Error("Usuário não encontrado");
 
-    const updatedUser = await prisma.user.update({
-      where: {
-        id,
-      },
-      data: {
-        name,
-        email,
-        image_url: image_url ?? verifyIfUserExist.image_url,
-        dateOfBirth,
-      },
+    const updatedUser = await this.usersRepository.updateUser({
+      id,
+      name,
+      email,
+      dateOfBirth,
+      image_url,
     });
 
     return updatedUser;

@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { GetUserProfileUseCase } from "./get-user-profile-usecase";
+import { MakeUsersProfileUseCase } from "../../../factories/make-users-profile-use-case";
 
 export class GetUserProfileController {
   async handle(reqeust: Request, response: Response) {
     const { id } = reqeust.user;
 
-    const getUserProfileUseCase = new GetUserProfileUseCase();
+    const getUserProfileUseCase = MakeUsersProfileUseCase();
 
     const user = await getUserProfileUseCase.execute({
       id,

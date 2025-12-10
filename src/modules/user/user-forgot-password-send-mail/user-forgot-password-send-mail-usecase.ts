@@ -1,4 +1,5 @@
 import { prisma } from "../../../lib/prisma";
+import { UsersRepository } from "../../../repositories/user/users-repository";
 import { sendMail } from "../../../services/mail/sendMail";
 import { passwordResetTemplate } from "../../../templates/userForgotPassword";
 import { createCode } from "../../../utils/create-code";
@@ -8,12 +9,9 @@ interface SendMailForgotPasswordUseCaseRequest {
 }
 
 export class UserForgotPasswordSendMailUseCase {
+  constructor(private usersRepository: UsersRepository) {}
   async execute({ email }: SendMailForgotPasswordUseCaseRequest) {
-    const verifyIfUserExists = await prisma.user.findFirst({
-      where: {
-        email,
-      },
-    });
+    const verifyIfUserExists = await this.usersRepository.findByEmail(email);
 
     if (!verifyIfUserExists) throw new Error("Usuário não encontrado");
 
@@ -21,11 +19,7 @@ export class UserForgotPasswordSendMailUseCase {
 
     const templateEmail = passwordResetTemplate(verifyIfUserExists.name, code);
 
-    await sendMail(
-      verifyIfUserExists.email,
-      "Redefinição de senha",
-      templateEmail
-    );
+    await this.usersRepository.sendMail(email, templateEmail);
 
     return { message: "Email enviado com sucesso" };
   }

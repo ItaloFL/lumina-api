@@ -1,14 +1,13 @@
-import { CreateUserUseCase } from "./create-user-usecase";
 import { cloudinary } from "../../../config/cloudinary";
 import { Request, Response } from "express";
+import { MakeCreateUserUseCase } from "../../../factories/make-create-user-use-case";
 
 export class CreateUserController {
   async handle(request: Request, response: Response) {
     const { name, email, password, dateOfBirth } = request.body;
     const image = request.file;
 
-    
-    const createUserUseCase = new CreateUserUseCase();
+    const createUserUseCase = MakeCreateUserUseCase();
 
     const base64Image = `data:${
       image!.mimetype
