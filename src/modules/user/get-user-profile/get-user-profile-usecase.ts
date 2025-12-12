@@ -8,7 +8,6 @@ export class GetUserProfileUseCase {
   constructor(private usersRepository: UsersRepository) {}
   async execute({ id }: GetUserProfileUseCaseRequest) {
     const user = await this.usersRepository.findById(id);
-
     return user;
   }
 }

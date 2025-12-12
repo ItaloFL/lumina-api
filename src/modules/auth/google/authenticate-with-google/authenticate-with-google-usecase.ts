@@ -34,11 +34,9 @@ export class AuthenticateWithGoogleUseCase {
     }
 
     const token = sign({}, env.JWT_SECRET, {
-      subject: user.id, 
+      subject: user.id,
       expiresIn: "7d",
     });
-
-    return token;
 
     return token;
   }

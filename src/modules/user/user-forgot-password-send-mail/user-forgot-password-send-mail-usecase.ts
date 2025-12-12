@@ -1,3 +1,4 @@
+import { AppError } from "../../../errors/AppError/AppError";
 import { prisma } from "../../../lib/prisma";
 import { UsersRepository } from "../../../repositories/user/users-repository";
 import { sendMail } from "../../../services/mail/sendMail";
@@ -13,7 +14,7 @@ export class UserForgotPasswordSendMailUseCase {
   async execute({ email }: SendMailForgotPasswordUseCaseRequest) {
     const verifyIfUserExists = await this.usersRepository.findByEmail(email);
 
-    if (!verifyIfUserExists) throw new Error("Usuário não encontrado");
+    if (!verifyIfUserExists) throw new AppError("Usuário não encontrado");
 
     const code = await createCode();
 

@@ -1,3 +1,4 @@
+import { AppError } from "../../../errors/AppError/AppError";
 import { prisma } from "../../../lib/prisma";
 import { UsersRepository } from "../../../repositories/user/users-repository";
 
@@ -20,7 +21,7 @@ export class UpdateUserProfileUseCase {
   }: UpdateUserUseCaseRequest) {
     const verifyIfUserExist = await this.usersRepository.findByEmail(email);
 
-    if (!verifyIfUserExist) throw new Error("Usuário não encontrado");
+    if (!verifyIfUserExist) throw new AppError("Usuário não encontrado");
 
     const updatedUser = await this.usersRepository.updateUser({
       id,

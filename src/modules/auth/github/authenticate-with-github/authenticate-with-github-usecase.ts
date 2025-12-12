@@ -1,6 +1,7 @@
 import { sign } from "jsonwebtoken";
 import { prisma } from "../../../../lib/prisma";
 import { env } from "../../../../env";
+import { AppError } from "../../../../errors/AppError/AppError";
 
 export class AuthenticateWithGithubUseCase {
   async execute(code: string) {
@@ -24,7 +25,7 @@ export class AuthenticateWithGithubUseCase {
     const accessToken = tokenData.access_token;
 
     if (!accessToken) {
-      throw new Error("GitHub access token not returned");
+      throw new AppError("GitHub access token not returned");
     }
 
     const userResponse = await fetch("https://api.github.com/user", {
@@ -38,7 +39,7 @@ export class AuthenticateWithGithubUseCase {
     const { name, email, avatar_url } = githubUser;
 
     if (!email) {
-      throw new Error(
+      throw new AppError(
         "Seu GitHub não possui e-mail público. Configure um e-mail primário."
       );
     }

@@ -1,6 +1,7 @@
 import { hash } from "bcryptjs";
 import { prisma } from "../../../lib/prisma";
 import { UsersRepository } from "../../../repositories/user/users-repository";
+import { AppError } from "../../../errors/AppError/AppError";
 
 export interface CreateUserUseCaseRequest {
   name: string;
@@ -21,7 +22,7 @@ export class CreateUserUseCase {
   }: CreateUserUseCaseRequest) {
     const verifyIfUserExists = await this.usersRepository.findByEmail(email);
 
-    if (verifyIfUserExists) throw new Error("Usuário já existe");
+    if (verifyIfUserExists) throw new AppError("Usuário já existe");
 
     const passwordHash = await hash(password, 8);
 
@@ -30,6 +31,7 @@ export class CreateUserUseCase {
       email,
       password: passwordHash,
       image_url,
+      provider: "LOCAL",
       dateOfBirth,
     });
 
